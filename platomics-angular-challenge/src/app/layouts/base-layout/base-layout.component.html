@@ -1,0 +1,8 @@
+<div
+  *ngIf="config$ | async as config"
+  [class.vex-layout-boxed]="config.boxed"
+  [class.vex-layout-horizontal]="config.layout === 'horizontal'"
+  [class.vex-layout-toolbar-fixed]="config.toolbar.fixed"
+  class="vex-base-layout-container">
+  <ng-content></ng-content>
+</div>

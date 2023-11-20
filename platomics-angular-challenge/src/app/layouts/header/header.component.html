@@ -1,0 +1,23 @@
+<div class="w-full bg-white">
+    <div class="mx-auto px-6 lg:px-10 sm:px-6 w-full border-b shadow">
+      <div class="flex items-center justify-between py-8 h-[70px] space-x-6">
+        <a class="flex content-start cursor-pointer" routerLink="/">
+          <img class="h-8 w-auto" src="../../../../assets/header-logo.png" alt="" />
+        </a>
+        <div class="flex justify-end cursor-pointer items-center gap-6">
+          <div class="relative">
+            <div class="flex flex-row items-center gap-1" [matMenuTriggerFor]="menu">
+              <!-- <app-avatar [user]="user" mat-button></app-avatar> -->
+              <mat-icon fontIcon="account_circle"></mat-icon>
+            </div>
+  
+            <mat-menu #menu="matMenu" class="!shadow-lg border top-2 bg-white">
+              <div mat-menu-item>
+                <span class="!text-sm">Logout</span>
+              </div>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,6 @@
+<app-header></app-header>
+<app-base-layout *ngIf="config$ | async as config">
+    <main class="vex-layout-content">
+        <router-outlet></router-outlet>
+    </main>
+</app-base-layout>

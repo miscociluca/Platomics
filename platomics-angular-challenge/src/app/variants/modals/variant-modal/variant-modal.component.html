@@ -1,0 +1,70 @@
+<ng-template #template>
+    <form (ngSubmit)="save()" [formGroup]="form" novalidate>
+        <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+            <h2 class="headline m-0" fxFlex="auto">{{form.get('name')?.value}}</h2>
+            <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <mat-divider class="text-border"></mat-divider>
+
+        <mat-dialog-content fxLayout="column">
+            <div class="flex flex-col sm:flex-row">
+                <mat-form-field class="mt-4 flex-auto">
+                    <mat-label>{{'Gene' }}</mat-label>
+                    <input formControlName="gene" matInput>
+                </mat-form-field>
+                <mat-form-field class="sm:mt-4 sm:ml-4 flex-auto">
+                    <mat-label>{{'Variant Type'}}</mat-label>
+                    <input formControlName="variantType" matInput>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row">
+                <mat-form-field class="mt-1 flex-auto">
+                    <mat-label>{{'Location' }}</mat-label>
+                    <input formControlName="location" matInput>
+                </mat-form-field>
+                <mat-form-field class="sm:mt-1 sm:ml-1 flex-auto">
+                    <mat-label>{{'Exon' }}</mat-label>
+                    <input formControlName="exon" matInput>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row">
+                <mat-form-field class="mt-1 flex-auto">
+                    <mat-label>{{'Frequency' }}</mat-label>
+                    <input formControlName="frequency" matInput>
+                </mat-form-field>
+                <mat-form-field class="sm:mt-1 sm:ml-4 flex-auto">
+                    <mat-label>{{'Pathogenicity'}}</mat-label>
+                    <input formControlName="pathogenicity" matInput [style.color]="'red'">
+                </mat-form-field>
+            </div>
+            <mat-form-field class="flex-auto">
+                <mat-label>{{'Clinical Significance' }}</mat-label>
+                <input formControlName="clinicalSignificance" matInput>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <mat-label>{{'References'}}</mat-label>
+                <input formControlName="references" matInput>
+            </mat-form-field>
+
+            <mat-divider class="mt-4 text-border"></mat-divider>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>{{'Classification' }}</mat-label>
+                <mat-select formControlName="classification">
+                    <mat-option *ngFor="let state of classificationStates" [value]="Classification[state]">
+                        {{Classification[state]}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+            <button mat-flat-button mat-dialog-close type="button">{{'Cancel'}}</button>
+            <button color="primary" mat-flat-button type="submit">{{'Update Variant'}}</button>
+        </mat-dialog-actions>
+    </form>
+
+</ng-template>
