@@ -1,5 +1,7 @@
 # Platomics Angular Challenge
 
+
+
 In this take home assignment we would like you to implement a basic UI which makes it possible to view a relatively large dataset.
 
 Some products that Platomics is working on is related to Next Generation Sequencing(NGS). In simplified terms, one of the goals of NGS is to detect mutations in a patients genome and classify them in terms of severity. These mutations are called variants. Since all humans are different we will always find variants so it is important to understand the impact of a variant and how high our confidence in detecting it is.
