@@ -32,7 +32,7 @@ export class VariantModalComponent {
     constructor(
         private formBuilder: FormBuilder,
         private store: Store,
-        private dialog: MatDialog
+        public dialog: MatDialog
     ) {
         this.form = this.createFormGroupWithBuilder(this.formBuilder);
     }
