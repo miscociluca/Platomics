@@ -86,7 +86,7 @@ export class VariantsState implements NgxsOnInit {
 
   private generateVariantBatch(): Variant[] {
     const variants: Variant[] = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 10000; i++) {
       const variant = this.generateVariant();
       variants.push(variant);
     }

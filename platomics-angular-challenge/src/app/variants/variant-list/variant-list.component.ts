@@ -16,7 +16,7 @@ import {TableTypeEnum} from "../../models/enums/table-type.enum";
   templateUrl: "./variant-list.component.html",
   styleUrls: ["./variant-list.component.scss"],
 })
-export class VariantListComponent implements OnInit {
+export class VariantListComponent {
   columns: TableColumn<Variant>[] = [
     {label: 'Name', property: 'name', type: 'text', visible: true, cssClasses: ['font-medium']},
     {label: 'Gene', property: 'gene', type: 'text', visible: true, cssClasses: ['font-medium']},
@@ -44,18 +44,11 @@ export class VariantListComponent implements OnInit {
   variantModalRef!: VariantModalComponent;
   @Select(VariantsState.getVariantsList)
   public variants$!: Observable<Variant[]>;
-  variants: Array<Variant> = [];
   variantsSignal = toSignal(this.variants$);
   tableType = TableTypeEnum.pagination;
   protected readonly TableTypeEnum = TableTypeEnum;
-  constructor(private store: Store, private spinner: NgxSpinnerService) {
-  }
 
-  public ngOnInit(): void {
-    this.variants$.subscribe((variants) => {
-      this.variants = variants;
-    });
-  }
+  constructor(private store: Store, private spinner: NgxSpinnerService) {}
 
   menuItemClicked(item: { data: any; id: number }) {
     switch (item.id) {
@@ -74,10 +67,7 @@ export class VariantListComponent implements OnInit {
     if ($event.isLastPage) {
       this.spinner.show();
       setTimeout(() => {
-        this.store.dispatch(new Variants.GenerateNewBatch()).subscribe((res) => {
-          this.spinner.hide();
-          this.variants = res.variants.variants;
-        });
+        this.store.dispatch(new Variants.GenerateNewBatch());
         this.spinner.hide();
       }, 1000);
 
@@ -85,7 +75,7 @@ export class VariantListComponent implements OnInit {
   }
 
   public onEndOfPageReached() {
-    this.store.dispatch(new Variants.GenerateNewBatch()).subscribe();
+    this.store.dispatch(new Variants.GenerateNewBatch());
   }
 
   private scrollPageToStart(): void {

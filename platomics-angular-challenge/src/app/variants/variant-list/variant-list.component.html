@@ -1,6 +1,6 @@
 <variant-modal #variantModalRef></variant-modal>
 <div *ngIf="tableType === TableTypeEnum.pagination;else scrollTable">
-  <mui-datatable *ngIf="variants.length>0" [columns]="columns" [menuItems]="menuItems" [data]="variants"
+  <mui-datatable  [columns]="columns" [menuItems]="menuItems" [data]="variantsSignal()"
                  [title]="'Variants'" [pageSize]="10" [pageSizeOptions]="[50,100,200,1000]"
                  (menuItemClicked)="menuItemClicked($event)" (pageChanged)="onPageChangeEvent($event)">
   </mui-datatable>

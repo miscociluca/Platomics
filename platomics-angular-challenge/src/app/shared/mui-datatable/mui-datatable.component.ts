@@ -1,12 +1,12 @@
 import {
   AfterViewInit,
-  Component,
+  Component, computed,
   DestroyRef,
   EventEmitter, inject,
   Input, OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
+  Output, signal,
+  SimpleChanges, TrackByFunction,
   ViewChild
 } from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs';
@@ -70,7 +70,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
   ]
 })
 
-export class MuiDataTableComponent implements OnInit, AfterViewInit {
+export class MuiDataTableComponent implements OnInit {
   @Output()
   menuItemClicked = new EventEmitter<any>();
   @Output()
@@ -78,7 +78,19 @@ export class MuiDataTableComponent implements OnInit, AfterViewInit {
   @Output()
   pageChanged = new EventEmitter<any>();
 
+  @Input({required: true}) set data(data: any[] | undefined) {
+    this.dummyDataSignal.set(data ?? []);
+    this.dataSourceSignal().paginator = this.paginator || null;
+    this.dataSourceSignal().sort = this.sort || null;
+  }
 
+  private dummyDataSignal = signal<any[]>([]);
+  dataSourceSignal = computed(() => {
+    const data = this.dummyDataSignal();
+    return new MatTableDataSource<any>(data);
+  });
+
+  identity: TrackByFunction<any> = (_, item: any) => item.id;
   @Input()
   columns: TableColumn<any>[] = [];
   @Input()
@@ -88,11 +100,7 @@ export class MuiDataTableComponent implements OnInit, AfterViewInit {
   @Input()
   title: string = '';
   private _data: any[] = [];
-  @Input()
-  set data(value: any[]) {
-    this._data = value;
-    this.subject$.next(this._data);
-  }
+
   @Input()
   pageSize = 10;
   @Input()
@@ -100,28 +108,15 @@ export class MuiDataTableComponent implements OnInit, AfterViewInit {
   @Input()
   showPagination: boolean = true;
 
-  totalRows = 0;
   currentPage = 0;
 
   @ViewChild(MatPaginator, {static: true}) paginator?: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort?: MatSort;
-  subject$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  data$: Observable<any[]> = this.subject$.asObservable();
-  dataSource: MatTableDataSource<any>;
+
   searchCtrl = new FormControl();
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor() {
-    this.dataSource = new MatTableDataSource();
-  }
-
   ngOnInit() {
-    this.data$.pipe(
-      filter<any[]>(Boolean)
-    ).subscribe(data => {
-      this.dataSource.data = data;
-    });
-
     this.searchCtrl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => this.onFilterChange(value));
@@ -139,11 +134,6 @@ export class MuiDataTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator || null;
-    this.dataSource.sort = this.sort || null;
-  }
-
   menuItemClick(row: any, ids: number) {
     this.menuItemClicked.emit({data: row, id: ids});
   }
@@ -153,15 +143,11 @@ export class MuiDataTableComponent implements OnInit, AfterViewInit {
   }
 
   onFilterChange(value: string) {
-    if (!this.dataSource) {
+    if (!this.dataSourceSignal()) {
       return;
     }
     value = value.trim();
     value = value.toLowerCase();
-    this.dataSource.filter = value;
-  }
-
-  trackByProperty<T>(index: number, column: TableColumn<T>) {
-    return column.property;
+    this.dataSourceSignal().filter = value;
   }
 }
