@@ -24,7 +24,7 @@
 
       <table @stagger mat-table
              [dataSource]="dataSourceSignal()"
-             [trackBy]="identity" class="w-full" matSort>
+             [trackBy]="identity" class="w-full" matSort id="muiTable">
         <ng-container *ngFor="let column of columns;">
           <!-- Text Columns -->
           <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">

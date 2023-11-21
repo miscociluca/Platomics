@@ -84,7 +84,7 @@ export class MuiDataTableComponent implements OnInit {
     this.dataSourceSignal().sort = this.sort || null;
   }
 
-  private dummyDataSignal = signal<any[]>([]);
+  dummyDataSignal = signal<any[]>([]);
   dataSourceSignal = computed(() => {
     const data = this.dummyDataSignal();
     return new MatTableDataSource<any>(data);
